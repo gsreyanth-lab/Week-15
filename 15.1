@@ -1,0 +1,9 @@
+# analyze.awk  ->  awk -f analyze.awk out.tr
+$1=="r" && $4==3 && $5=="tcp" { tcpbytes += $6 }
+$1=="r" && $4==3 && $5=="cbr" { udpbytes += $6 }
+$1=="d"                       { drops++ }
+END {
+    printf "TCP throughput: %.1f kbps\n", tcpbytes*8/4.0/1000
+    printf "UDP throughput: %.1f kbps\n", udpbytes*8/3.0/1000
+    printf "Packets dropped: %d\n", drops
+}
